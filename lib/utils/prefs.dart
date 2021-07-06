@@ -1,22 +1,22 @@
 part of 'utils.dart';
 
 class Prefs{
-  static Future<Person> getPerson() async{
-    Person person;
+  static Future<People> getPeople() async{
+    People people;
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
-      String personString = pref.getString('person');
-      Map<String, dynamic> personJson = json.decode(personString); 
-      person = Person.fromJson(personJson);
+      String peopleString = pref.getString('people');
+      Map<String, dynamic> peopleJson = json.decode(peopleString); 
+      people = People.fromJson(peopleJson);
     } catch (e) {
       print(e);
     }
-    return person;
+    return people;
   }
 
-  static void setPerson (Person person) async{
+  static void setPeople (People people) async{
     SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString('person', json.encode(person.toJson()));
+    pref.setString('people', json.encode(people.toJson()));
   }
 
   static void clear() async{

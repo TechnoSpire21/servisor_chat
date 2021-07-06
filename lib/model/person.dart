@@ -1,13 +1,13 @@
 part of 'model.dart';
 
-class Person{
+class People{
   String email;
   String name;
   String img;
   String token;
   String uid;
 
-  Person({
+  People({
     this.email, 
     this.name, 
     this.img, 
@@ -15,7 +15,7 @@ class Person{
     this.uid
   });
 
-  factory Person.fromJson(Map<String, dynamic> json) => Person(
+  factory People.fromJson(Map<String, dynamic> json) => People(
     email: json['email'] ?? '',
     name: json['name'] ?? '',
     img: json['img'] ?? '',

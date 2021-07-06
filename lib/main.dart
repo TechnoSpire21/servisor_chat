@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:servisor_chat/pages/pages.dart';
+import 'package:servisor_chat/page/pages.dart';
 import 'package:servisor_chat/utils/utils.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: FutureBuilder(
-        future: Prefs.getPerson(),
+        future: Prefs.getPeople(),
         builder: (context, snapshot){
           if(snapshot.hasData && !snapshot.hasError && snapshot.data!=null){
             return Dashboard();
