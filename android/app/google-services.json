@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "153530657993",
-    "project_id": "servisor-chat",
-    "storage_bucket": "servisor-chat.appspot.com"
+    "project_number": "719346225911",
+    "project_id": "servisor-chat-course",
+    "storage_bucket": "servisor-chat-course.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:153530657993:android:fa27b5ced706fb3d207118",
+        "mobilesdk_app_id": "1:719346225911:android:015b908ab271f30caf39f2",
         "android_client_info": {
           "package_name": "com.technospire.servisor_chat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "153530657993-1obju7jabgrfjf43rulqfjc7infu1qmt.apps.googleusercontent.com",
+          "client_id": "719346225911-povi26ndghqki4ijous1dioudts5pl3d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.technospire.servisor_chat",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "153530657993-vpueov2249b0tnmu2r4c41r4l7jh5fb4.apps.googleusercontent.com",
+          "client_id": "719346225911-rkngtu63nhgibt0v8t1j1pb86k9qjab3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDBSNl-FJUhzsAtw8lkbtDJ6EhDVRE7WGc"
+          "current_key": "AIzaSyB3kBLkxcuhj1YBfAYmRUsmteUc5Hi3yjE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "153530657993-vpueov2249b0tnmu2r4c41r4l7jh5fb4.apps.googleusercontent.com",
+              "client_id": "719346225911-rkngtu63nhgibt0v8t1j1pb86k9qjab3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

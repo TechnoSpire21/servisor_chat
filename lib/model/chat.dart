@@ -9,12 +9,12 @@ class Chat{
   String uidSender;
 
   Chat({
-    this.dateTime, 
-    this.isRead, 
-    this.message, 
-    this.type,
-    this.uidReceiver, 
-    this.uidSender
+    required this.dateTime, 
+    required this.isRead, 
+    required this.message, 
+    required this.type,
+    required this.uidReceiver, 
+    required this.uidSender
   });
 
   factory Chat.fromJson(Map<String, dynamic> json) => Chat(

@@ -12,15 +12,15 @@ class Room{
   String uid;
 
   Room({
-    this.email, 
-    this.inRoom,
-    this.lastChat,
-    this.lastDateTime,
-    this.lastUid,
-    this.name,
-    this.img,
-    this.type,
-    this.uid
+    required this.email, 
+    required this.inRoom,
+    required this.lastChat,
+    required this.lastDateTime,
+    required this.lastUid,
+    required this.name,
+    required this.img,
+    required this.type,
+    required this.uid
   });
 
   factory Room.fromJson(Map<String, dynamic> json) => Room(

@@ -1,3 +1,3 @@
 part 'chat.dart';
-part 'person.dart';
+part 'people.dart';
 part 'room.dart';

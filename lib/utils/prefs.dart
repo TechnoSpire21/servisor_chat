@@ -1,12 +1,12 @@
 part of 'utils.dart';
 
 class Prefs{
-  static Future<People> getPeople() async{
-    People people;
+  static Future<People?> getPeople() async{
+    People? people;
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
-      String peopleString = pref.getString('people');
-      Map<String, dynamic> peopleJson = json.decode(peopleString); 
+      String? peopleString = pref.getString('people');
+      Map<String, dynamic> peopleJson = json.decode(peopleString!); 
       people = People.fromJson(peopleJson);
     } catch (e) {
       print(e);
@@ -23,4 +23,6 @@ class Prefs{
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.clear();
   }
+
+  static getPerson() {}
 }

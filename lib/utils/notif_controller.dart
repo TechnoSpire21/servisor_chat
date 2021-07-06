@@ -38,15 +38,15 @@ class NotifController{
   }
 
   static Future<void> sendNotification({
-    String type,
-    String myLastChat,
-    String myUid,
-    String myName,
-    String photo,
-    String personToken,
+    required String type,
+    required String myLastChat,
+    required String myUid,
+    required String myName,
+    required String photo,
+    required String personToken,
   }) async {
     String serverKey = //buat cloud messaging, di project settings firebase, cloud messaging tab
-        'AAAAI78j7Mk:APA91bGsd_AHFC3SxN-MqHGBMcMboB9f0ZZTPEmfYClskBMXTSDT-28nHxMul1kasX3NO2mbemML-bfBOKMm0s-GmaicDw-G2aAyaitS_7nMjQM2dVQaeqr3aCevYcGCa6momzX8EzVu';
+        '	AAAAp3xgUvc:APA91bHZ-Yr6MHQNpnpvtCugH0hgLOklENsirlIcleJy2ucoi6zlbxRQyN4e9ZwezRj8TvWK6ut17SyNfb7iCzSm3dX3QtwM62kaBmkPMpA0ZgCunRpjF6mC16PHvISsv2LQqmYjrAkk';
     try {
       await http.post(
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
@@ -89,10 +89,11 @@ class NotifController{
         provisional: false,
         sound: true,
       );
-      String vapidKey = //kata kunci akses untuk website messaging, di project settings firebase, web configuration, generate new pair
-          'BNXheQGG8RWiHCRHmEVBT9tHbSdpbmn7B0HDABeVJNMYKuDF94SV3QpRF4d4W-Aaad1KpsTRZuwkuSY5-YvRRqQ';
+      String vapidKey = //kata kunci akses untuk website messaging, di project settings firebase, cloud messaging tab, web configuration, generate new pair
+          'BNoklGnQrzh9zm0MSo6IwVQ_s7IWO6F2-IERTMXxo4d1eM444Tlx1LoalnmfMt4DHYnJQ_TNLWch0eXAv9I6JZE';
       if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-        token = await FirebaseMessaging.instance.getToken(vapidKey: vapidKey);
+        // token = await FirebaseMessaging.instance.getToken(vapidKey: vapidKey);
+        token = (await FirebaseMessaging.instance.getToken(vapidKey: vapidKey))!;
         print('User granted permission');
       } else if (settings.authorizationStatus ==
           AuthorizationStatus.provisional) {
@@ -108,7 +109,7 @@ class NotifController{
         print('A new onMessageOpenedApp event was published!');
       });
     } catch (e) {
-      print(e.message);
+      print(e);
     }
     return token;
   }
