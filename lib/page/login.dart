@@ -11,8 +11,23 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text("Login"),
+      body: Container(
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 16,
+              right: 0,
+              left: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Tidak ada akun? "),
+                  Text("Register di sini!"),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

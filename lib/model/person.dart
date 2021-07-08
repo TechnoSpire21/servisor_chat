@@ -8,11 +8,11 @@ class People{
   String uid;
 
   People({
-    this.email, 
-    this.name, 
-    this.img, 
-    this.token, 
-    this.uid
+    required this.email, 
+    required this.name, 
+    required this.img, 
+    required this.token, 
+    required this.uid
   });
 
   factory People.fromJson(Map<String, dynamic> json) => People(
