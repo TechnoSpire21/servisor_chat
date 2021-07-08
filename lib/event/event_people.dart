@@ -75,8 +75,8 @@ class EventPeople {
   //         .collection('people')
   //         .doc(uid)
   //         .get()
-  //         .catchError((onError) => print(onError));
-  //     people = People.fromJson(documentSnapshot.data());
+  //         .catchError((onError) => print("${onError.error}"));
+  //     people = People.fromJson(documentSnapshot.data()).toList();
   //   } catch (e) {
   //     print(e);
   //   }
