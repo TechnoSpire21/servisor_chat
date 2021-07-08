@@ -1,68 +1,62 @@
 part of 'pages.dart';
 
-class Login extends StatefulWidget {
-  // const Login({ Key? key }) : super(key: key);
+class Register extends StatefulWidget {
+  // const Register({ Key? key }) : super(key: key);
 
   @override
-  _LoginState createState() => _LoginState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   var _formKey = GlobalKey<FormState>();
+  var _nameController = TextEditingController();
   var _emailController = TextEditingController();
   var _passController = TextEditingController();
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  var _scaffoldKey = GlobalKey<FormState>();
 
-  void loginWithEmailAndPassword() async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: _emailController.text, password: _passController.text);
-      if (userCredential.user!.uid != null) {
-        if (userCredential.user!.emailVerified) {
-          String token = await NotifController.getTokenFromDevice();
-          EventPeople.updatePeopleToken(userCredential.user!.uid, token);
-          // EventPeople.getPeople(userCredential.user!.uid).then((people) {
-          //   Prefs.setPeople(people);
-          // });
-          showNotifSnackBar('Berhasil login');
-          print("Berhasil login");
+  void registerAccount() async {
+    // if (await EventPeople.checkEmail(_emailController.text) == '') {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: _emailController.text, password: _passController.text);
+        if (userCredential.user!.uid != null) {
+          print('Akun terbuat');
+          People people = People(
+            email: _emailController.text,
+            name: _nameController.text,
+            img: '',
+            token: '',
+            uid: userCredential.user!.uid,
+          );
+          EventPeople.addPeople(people);
+          await userCredential.user!.sendEmailVerification();
+          _nameController.clear();
           _emailController.clear();
           _passController.clear();
-        } else {
-          print("Email belum ter-verifikasi");
-          _scaffoldKey.currentState!.showSnackBar(SnackBar(
-            content: Text('Email belum ter-verifikasi'),
-            action: SnackBarAction(
-              label: "Send Verif",
-              onPressed: () async{
-                await userCredential.user!.sendEmailVerification();
-              },
-            ),
-          ));
         }
-      } else {
-        showNotifSnackBar('Failed');
-        print("Failed");
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      } catch (e) {
+        print(e);
       }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        showNotifSnackBar('Tidak ada user dengan email itu.');
-        print('Tidak ada user dengan email itu.');
-      } else if (e.code == 'wrong-password') {
-        showNotifSnackBar('Email atau password salah.');
-        print('Email atau password salah.');
-      }
-    }
+    // }
+    _nameController.clear();
     _emailController.clear();
-    _passController.clear();
+   _passController.clear();
   }
 
-  void showNotifSnackBar(String message) {
-    _scaffoldKey.currentState!.showSnackBar(SnackBar(
-      content: Text(message),
-    ));
-  }
+  // void showNotifSnackBar(String message){
+  //   _scaffoldKey.currentState!.showSnackBar(
+  //     SnackBar(
+  //       content: Text(message),
+  //     )
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +73,14 @@ class _LoginState extends State<Login> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Tidak ada akun? "),
+                  Text("Sudah ada akun? "),
                   SizedBox(
                     width: 2,
                   ),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Register()));
+                          MaterialPageRoute(builder: (context) => Login()));
                     },
                     child: Text(
                       "Klik di sini!",
@@ -123,6 +117,18 @@ class _LoginState extends State<Login> {
                           height: 30,
                         ),
                         TextFormField(
+                          controller: _nameController,
+                          validator: (value) =>
+                              value == '' ? 'Isi kolom ini!' : null,
+                          decoration: InputDecoration(
+                              hintText: 'nama anda...',
+                              prefixIcon: Icon(Icons.person)),
+                          textAlignVertical: TextAlignVertical.center,
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        TextFormField(
                           controller: _emailController,
                           validator: (value) =>
                               value == '' ? 'Isi kolom ini!' : null,
@@ -149,14 +155,6 @@ class _LoginState extends State<Login> {
                         SizedBox(
                           height: 16,
                         ),
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ForgotPassword()));
-                            },
-                            child: Text("Lupa password? ")),
                         SizedBox(
                           height: 16,
                         ),
@@ -164,11 +162,11 @@ class _LoginState extends State<Login> {
                           child: RaisedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                //login Auth function
-                                loginWithEmailAndPassword();
+                                //Register Auth function
+                                registerAccount();
                               }
                             },
-                            child: Text("Login"),
+                            child: Text("Register"),
                             color: Color(0xFF45A1E4),
                             textColor: Colors.white,
                           ),
