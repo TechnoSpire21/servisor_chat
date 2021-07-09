@@ -36,50 +36,46 @@ class EventPeople {
   static void updatePeopleToken(String myUid, String token) async {
     try {
       //update profile
-    FirebaseFirestore.instance
-        .collection('people')
-        .doc(myUid)
-        .update({
-          'token': token,
-        })
-        .then((value) => null)
-        .catchError((onError) => print(onError));
-    //update contact
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('people').get();
-    querySnapshot.docs.forEach((QueryDocumentSnapshot queryDocumentSnapshot) {
-      queryDocumentSnapshot.reference
-          .collection('contact')
-          .where('uid', isEqualTo: myUid)
-          .get()
-          .then((value) {
-        value.docs.forEach((docContact) {
-          docContact.reference
-              .update({
-                'token': token,
-              })
-              .then((value) => null)
-              .catchError((onError) => print(onError));
+      FirebaseFirestore.instance
+          .collection('people')
+          .doc(myUid)
+          .update({
+            'token': token,
+          })
+          .then((value) => null)
+          .catchError((onError) => print(onError));
+      //update contact
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('people').get();
+      querySnapshot.docs.forEach((QueryDocumentSnapshot queryDocumentSnapshot) {
+        queryDocumentSnapshot.reference
+            .collection('contact')
+            .where('uid', isEqualTo: myUid)
+            .get()
+            .then((value) {
+          value.docs.forEach((docContact) {
+            docContact.reference
+                .update({
+                  'token': token,
+                })
+                .then((value) => null)
+                .catchError((onError) => print(onError));
+          });
         });
       });
-    });
     } catch (e) {
       print(e);
     }
   }
 
-  // static Future<People> getPeople(String uid) async{
-  //   People people;
-  //   try {
-  //     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-  //         .collection('people')
-  //         .doc(uid)
-  //         .get()
-  //         .catchError((onError) => print("${onError.error}"));
-  //     people = People.fromJson(documentSnapshot.data()).toList();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   return people;
-  // }
+  static Future<People> getPeople(String uid) async {
+    People? people;
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('people')
+        .doc(uid)
+        .get()
+        .catchError((onError) => print("${onError.error}"));
+    people = People.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+    return people;
+  }
 }
