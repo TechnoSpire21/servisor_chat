@@ -1,24 +1,22 @@
 part of 'event.dart';
 
 class EventPeople {
-  // static Future<String> checkEmail(String email) async {
-  //   QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-  //       .collection('people')
-  //       .where('email', isEqualTo: email)
-  //       .get()
-  //       // ignore: invalid_return_type_for_catch_error
-  //       .catchError((onError) => print(onError));
-  //   // ignore: unnecessary_null_comparison
-  //   if (querySnapshot != null && querySnapshot.docs.length > 0) {
-  //     if (querySnapshot.docs.length > 0) {
-  //       Object? people = querySnapshot.docs[0].data();
-  //       return people![uid];
-  //     } else {
-  //       return '';
-  //     }
-  //   }
-  //   return '';
-  // }
+  static Future<String> checkEmail(String email) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('people')
+        .where('email', isEqualTo: email)
+        .get()
+        .catchError((onError) => print(onError));
+    if (querySnapshot != null && querySnapshot.docs.length > 0) {
+      if (querySnapshot.docs.length > 0) {
+        Object? people = querySnapshot.docs[0].data();
+        return people![uid];
+      } else {
+        return '';
+      }
+    }
+    return '';
+  }
 
   static void addPeople(People people) async {
     try {

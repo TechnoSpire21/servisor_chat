@@ -7,3 +7,4 @@ import 'package:servisor_chat/model/model.dart';
 
 part 'event_people.dart';
 part 'event_storage.dart';
+part 'event_contact.dart';
