@@ -28,7 +28,7 @@ class _LoginState extends State<Login> {
           });
           showNotifSnackBar('Berhasil login');
           print("Berhasil login");
-           Navigator.push(context,
+           Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => Dashboard()));
           _emailController.clear();
           _passController.clear();
