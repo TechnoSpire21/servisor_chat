@@ -48,7 +48,41 @@ class _DashboardState extends State<Dashboard> {
             ),
             child: Row(
               children: [
-                
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: FadeInImage(
+                    placeholder: AssetImage('assets/images/servisor.png'),
+                    image: NetworkImage(_myPeople.img),
+                    width: 100,
+                    height: 100,
+                  ),
+                ),
+                SizedBox(width: 16,),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _myPeople.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.white
+                        ),
+                      ),
+                      SizedBox(height: 4,),
+                      Text(
+                        _myPeople.email,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.white54
+                        ),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),
