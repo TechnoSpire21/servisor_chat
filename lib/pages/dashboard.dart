@@ -86,6 +86,41 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
           ),
+          ListTile(
+            onTap: (){
+
+            },
+            leading: Icon(Icons.person),
+            title: Text('Edit Profile'),
+            trailing: Icon(Icons.navigate_next),
+          ),
+
+          ListTile(
+            onTap: (){
+
+            },
+            leading: Icon(Icons.lock),
+            title: Text('Reset Password'),
+            trailing: Icon(Icons.navigate_next),
+          ),
+
+          ListTile(
+            onTap: (){
+
+            },
+            leading: Icon(Icons.image),
+            title: Text('Edit Photo'),
+            trailing: Icon(Icons.navigate_next),
+          ),
+
+          ListTile(
+            onTap: (){
+
+            },
+            leading: Icon(Icons.logout),
+            title: Text('Logout'),
+            trailing: Icon(Icons.navigate_next),
+          ),
         ],
       ),
     );
