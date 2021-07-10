@@ -1,8 +1,8 @@
 part of 'utils.dart';
 
 class Prefs{
-  static Future<People?> getPeople() async{
-    People? people;
+  static Future<People> getPeople() async{
+    late People people;
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
       String? peopleString = pref.getString('people');

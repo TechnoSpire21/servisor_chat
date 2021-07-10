@@ -9,19 +9,20 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   late People _myPeople;
-  // void getMyPeople() async{
-  //   People? people = await Prefs.getPeople();
-  //   setState(() {
-  //     _myPeople = people;
-  //   });
-  //   print(_myPeople.email);
-  // }
 
-  // @override
-  // void initState() {
-  //   getMyPeople();
-  //   super.initState();
-  // }
+  void getMyPeople() async{
+    People people = await Prefs.getPeople();
+    setState(() {
+      _myPeople = people;
+    });
+    print(_myPeople.email);
+  }
+
+  @override
+  void initState() {
+    getMyPeople();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
