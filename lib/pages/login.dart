@@ -18,13 +18,14 @@ class _LoginState extends State<Login> {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: _emailController.text, password: _passController.text);
+      print("Halo GUYS " + userCredential.user!.emailVerified.toString());
       if (userCredential.user!.uid != null) {
         if (userCredential.user!.emailVerified) {
           String token = await NotifController.getTokenFromDevice();
           EventPeople.updatePeopleToken(userCredential.user!.uid, token);
-          // EventPeople.getPeople(userCredential.user!.uid).then((people) {
-          //   Prefs.setPeople(people);
-          // });
+          EventPeople.getPeople(userCredential.user!.uid).then((people) {
+            Prefs.setPeople(people);
+          });
           showNotifSnackBar('Berhasil login');
           print("Berhasil login");
            Navigator.push(context,

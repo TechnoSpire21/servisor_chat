@@ -8,24 +8,39 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  late People _myPeople;
+  People _myPeople = new People(email: '', name: '', img: '', token: '', uid: '');
 
-  void getMyPeople() async{
+  Future<void> getMyPeople() async{
+    print('GET PEOPLE MASUK');
     People people = await Prefs.getPeople();
+    
     setState(() {
       _myPeople = people;
     });
     print(_myPeople.email);
+
+    print('----------------');
+    print('CURRENT USER FROM FIREBASE: ');
+    print(_myPeople.email);
+    print(_myPeople.name);
+    print('----------------');
   }
 
   @override
   void initState() {
+    _myPeople = new People(email: '', name: '', img: '', token: '', uid: '');
     getMyPeople();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    getMyPeople();
+    print('----------------');
+    print('CURRENT USER: ');
+    print(_myPeople.email);
+    print(_myPeople.name);
+    print('----------------');
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
@@ -52,7 +67,8 @@ class _DashboardState extends State<Dashboard> {
                   borderRadius: BorderRadius.circular(100),
                   child: FadeInImage(
                     placeholder: AssetImage('assets/images/servisor.png'),
-                    image: NetworkImage(_myPeople.img),
+                    // image: NetworkImage(_myPeople.img),
+                    image: AssetImage('assets/images/servisor.png'),
                     width: 100,
                     height: 100,
                   ),
@@ -65,6 +81,7 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       Text(
                         _myPeople.name,
+                        // 'rei',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -74,6 +91,7 @@ class _DashboardState extends State<Dashboard> {
                       SizedBox(height: 4,),
                       Text(
                         _myPeople.email,
+                        // 'rei@gmail.com',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
