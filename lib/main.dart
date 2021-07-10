@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: FutureBuilder(
-        future: Prefs.getPerson(),
+        future: Prefs.getPeople(),
         builder: (context, snapshot) {
           if (snapshot.hasData && !snapshot.hasError && snapshot.data != null) {
             return Dashboard();

@@ -43,7 +43,7 @@ class NotifController{
     required String myUid,
     required String myName,
     required String photo,
-    required String personToken,
+    required String peopleToken,
   }) async {
     String serverKey = //buat cloud messaging, di project settings firebase, cloud messaging tab
         '	AAAAp3xgUvc:APA91bHZ-Yr6MHQNpnpvtCugH0hgLOklENsirlIcleJy2ucoi6zlbxRQyN4e9ZwezRj8TvWK6ut17SyNfb7iCzSm3dX3QtwM62kaBmkPMpA0ZgCunRpjF6mC16PHvISsv2LQqmYjrAkk';
@@ -67,7 +67,7 @@ class NotifController{
               'tag': myUid,
             },
             'priority': 'high',
-            'to': personToken,
+            'to': peopleToken,
           },
         ),
       );

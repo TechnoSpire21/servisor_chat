@@ -23,6 +23,4 @@ class Prefs{
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.clear();
   }
-
-  static getPerson() {}
 }
