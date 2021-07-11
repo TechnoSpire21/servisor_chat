@@ -73,6 +73,11 @@ class _ListContactState extends State<ListContact> {
     );
     if(value == 'add'){
       String peopleUid = await EventPeople.checkEmail(_emailController.text);
+      if(peopleUid != ''){
+        EventPeople.getPeople(peopleUid).then((people){
+          EventContact.addContact(myUid: _myPeople.uid, people: people);
+        });
+      }
     }
     _emailController.clear();
   }
