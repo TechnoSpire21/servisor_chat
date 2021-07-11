@@ -9,14 +9,7 @@ class EventPeople {
         .catchError((onError) => print(onError));
     if (querySnapshot != null && querySnapshot.docs.length > 0) {
       if (querySnapshot.docs.length > 0) {
-        // return querySnapshot.docs[0].data()!['uid'];
-        for (var i = 0; i < 100; i++) {
-        print("ISI QUERY");
-        }
-        print("ISI QUERY");
-        print(querySnapshot);
-        print("ISI QUERY ENDS HERE");
-        return querySnapshot.docs.elementAt(0).toString();
+        return querySnapshot.docs[0].get('uid').toString();
       } else {
         return '';
       }
