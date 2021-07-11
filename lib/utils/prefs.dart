@@ -6,14 +6,14 @@ class Prefs{
     SharedPreferences pref = await SharedPreferences.getInstance();
     try {
       String? peopleString = pref.getString('people');
-      print('masuk oe');
-      print(peopleString);
+      // print('masuk oe');
+      // print(peopleString);
       Map<String, dynamic> peopleJson = json.decode(peopleString!); 
       people = People.fromJson(peopleJson);
-      print('MASUK DI TRY');
+      // print('MASUK DI TRY');
     } catch (e) {
       print(e);
-      print('MASUK DI ERROR');
+      // print('MASUK DI ERROR');
     }
     return people;
   }

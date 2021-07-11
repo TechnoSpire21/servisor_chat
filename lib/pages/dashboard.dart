@@ -17,7 +17,7 @@ class _DashboardState extends State<Dashboard> {
   ];
 
   Future<void> getMyPeople() async {
-    print('GET PEOPLE MASUK');
+    // print('GET PEOPLE MASUK');
     People people = await Prefs.getPeople();
 
     setState(() {
