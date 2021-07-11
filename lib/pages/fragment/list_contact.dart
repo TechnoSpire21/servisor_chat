@@ -124,11 +124,6 @@ class _ListContactState extends State<ListContact> {
                 child: Text('Empty'),
               );
             }
-            // return ListView.separated(
-            //   itemBuilder: null,
-            //   separatorBuilder: null,
-            //   itemCount: null
-            // );
           },
         ),
         Positioned(
