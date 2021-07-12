@@ -69,52 +69,61 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         type: type,
         uid: widget.room.uid);
 
-    //sender room
+    // Sender Room
     bool isSenderRoomExist = await EventChatRoom.checkRoomIsExist(
-        isSender: true, myUid: _myPeople.uid, personUid: widget.room.uid);
-
+      isSender: true,
+      myUid: _myPeople.uid,
+      peopleUid: widget.room.uid,
+    );
     if (isSenderRoomExist) {
       EventChatRoom.updateRoom(
-          isSender: true,
-          myUid: _myPeople.uid,
-          personUid: widget.room.uid,
-          room: roomSender);
+        isSender: true,
+        myUid: _myPeople.uid,
+        peopleUid: widget.room.uid,
+        room: roomSender,
+      );
     } else {
       EventChatRoom.addRoom(
-          isSender: true,
-          myUid: _myPeople.uid,
-          personUid: widget.room.uid,
-          room: roomSender);
-      EventChatRoom.addChat(
-          chat: chat,
-          isSender: true,
-          myUid: _myPeople.uid,
-          personUid: widget.room.uid);
-    }
-    ;
-
-    //receiver room
-    bool isReceiverRoomExist = await EventChatRoom.checkRoomIsExist(
-        isSender: false, myUid: _myPeople.uid, personUid: widget.room.uid);
-
-    if (isReceiverRoomExist) {
-      EventChatRoom.updateRoom(
-          isSender: false,
-          myUid: _myPeople.uid,
-          personUid: widget.room.uid,
-          room: roomReceiver);
-    } else {
-      EventChatRoom.addRoom(
-          isSender: false,
-          myUid: _myPeople.uid,
-          personUid: widget.room.uid,
-          room: roomReceiver);
+        isSender: true,
+        myUid: _myPeople.uid,
+        peopleUid: widget.room.uid,
+        room: roomSender,
+      );
     }
     EventChatRoom.addChat(
-        chat: chat,
+      chat: chat,
+      isSender: true,
+      myUid: _myPeople.uid,
+      peopleUid: widget.room.uid,
+    );
+
+    // Receiver Room
+    bool isReceiverRoomExist = await EventChatRoom.checkRoomIsExist(
+      isSender: false,
+      myUid: _myPeople.uid,
+      peopleUid: widget.room.uid,
+    );
+    if (isReceiverRoomExist) {
+      EventChatRoom.updateRoom(
         isSender: false,
         myUid: _myPeople.uid,
-        personUid: widget.room.uid);
+        peopleUid: widget.room.uid,
+        room: roomReceiver,
+      );
+    } else {
+      EventChatRoom.addRoom(
+        isSender: false,
+        myUid: _myPeople.uid,
+        peopleUid: widget.room.uid,
+        room: roomReceiver,
+      );
+    }
+    EventChatRoom.addChat(
+      chat: chat,
+      isSender: false,
+      myUid: _myPeople.uid,
+      peopleUid: widget.room.uid,
+    );
 
     String token = await EventPeople.getPeopleToken(widget.room.uid);
     if (token != '') {
@@ -138,12 +147,12 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
       EventChatRoom.updateChatIsRead(
           isSender: true,
           myUid: _myPeople.uid,
-          personUid: widget.room.uid,
+          peopleUid: widget.room.uid,
           chatId: chat.dateTime.toString());
       EventChatRoom.updateChatIsRead(
           isSender: false,
           myUid: _myPeople.uid,
-          personUid: widget.room.uid,
+          peopleUid: widget.room.uid,
           chatId: chat.dateTime.toString());
     }
   }
@@ -372,14 +381,14 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
             width: 4,
           ),
           SizedBox(
-            child: chat.uidSender == _myPeople.uid
-                ? null
-                : Text(
+            child: chat.uidSender == widget.room.uid
+                ? Text(
                     dateTime,
                     style: TextStyle(
                       fontSize: 12,
                     ),
-                  ),
+                  )
+                : null,
           ),
           SizedBox(
             width: 4,
