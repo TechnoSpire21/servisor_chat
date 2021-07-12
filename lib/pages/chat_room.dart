@@ -114,14 +114,37 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         chat: chat,
         isSender: false,
         myUid: _myPeople.uid,
-        personUid: widget.room.uid
-    );
+        personUid: widget.room.uid);
 
     String token = await EventPeople.getPeopleToken(widget.room.uid);
-    if(token != ''){
+    if (token != '') {
       //notif
-    }else{
+      await NotifController.sendNotification(
+        myLastChat: message,
+        myUid: _myPeople.name,
+        myName: _myPeople.uid,
+        photo: _myPeople.img,
+        peopleToken: token,
+        type: type,
+      );
+    } else {
       print(token);
+    }
+
+    bool peopleInRoom = await EventChatRoom.checkIsPersonInRoom(
+        myUid: _myPeople.uid, peopleUid: widget.room.uid);
+    if (peopleInRoom) {
+      //method read
+      EventChatRoom.updateChatIsRead(
+          isSender: true,
+          myUid: _myPeople.uid,
+          personUid: widget.room.uid,
+          chatId: chat.dateTime.toString());
+      EventChatRoom.updateChatIsRead(
+          isSender: false,
+          myUid: _myPeople.uid,
+          personUid: widget.room.uid,
+          chatId: chat.dateTime.toString());
     }
   }
 
@@ -214,18 +237,14 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
               }
               if (snapshot.data != null && snapshot.data!.docs.length > 0) {
                 List<QueryDocumentSnapshot> listChatRoom = snapshot.data!.docs;
-                return ListView.separated(
+                return ListView.builder(
                   itemCount: listChatRoom.length,
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      thickness: 1,
-                      height: 1,
-                    );
-                  },
                   itemBuilder: (context, index) {
                     Chat chat = Chat.fromJson(
                         listChatRoom[index].data() as Map<String, dynamic>);
-                    return itemChat(chat);
+                    return Container(
+                        margin: EdgeInsets.fromLTRB(16, 2, 16, 2),
+                        child: itemChat(chat));
                   },
                 );
               } else {
@@ -278,7 +297,9 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
                     ),
                   ),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        sendMessage('text', _controllerMessage.text);
+                      },
                       icon: Icon(
                         Icons.send,
                         color: Colors.white,
@@ -293,8 +314,78 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
   }
 
   Widget itemChat(Chat chat) {
+    DateTime chatDateTime = DateTime.fromMicrosecondsSinceEpoch(chat.dateTime);
+    String dateTime = DateFormat('HH:mm').format(chatDateTime);
+
     if (chat.type == 'text') {
-      return Text(chat.message);
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: chat.uidSender == _myPeople.uid
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
+        //icon read ato gak
+        children: [
+          SizedBox(
+            child: chat.uidSender == _myPeople.uid
+                ? Icon(
+                    Icons.check,
+                    size: 20,
+                    color: Colors.blue,
+                  )
+                : null,
+          ),
+          SizedBox(
+            width: 4,
+          ),
+          SizedBox(
+            child: chat.uidSender == _myPeople.uid
+                ? Text(
+                    dateTime,
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  )
+                : null,
+          ),
+          SizedBox(
+            width: 4,
+          ),
+          Container(
+            // width: MediaQuery.of(context).size.width * 0.6,
+            decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.only(
+                  topLeft:
+                      Radius.circular(chat.uidSender == _myPeople.uid ? 10 : 0),
+                  topRight:
+                      Radius.circular(chat.uidSender == _myPeople.uid ? 0 : 10),
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                )),
+            padding: EdgeInsets.all(8),
+            child: Text(
+              chat.message,
+              style: TextStyle(color: Colors.white70),
+            ),
+          ),
+          SizedBox(
+            width: 4,
+          ),
+          SizedBox(
+            child: chat.uidSender == _myPeople.uid
+                ? null
+                : Text(
+                    dateTime,
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
+          ),
+          SizedBox(
+            width: 4,
+          ),
+        ],
+      );
     } else {
       return Container(
         height: 20,

@@ -73,4 +73,43 @@ class EventChatRoom {
       print(e);
     }
   }
+
+  static Future<bool> checkIsPersonInRoom({required String myUid, required String peopleUid}) async {
+    bool inRoom = false;
+    try {
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+      .collection('people')
+      .doc(myUid)
+      .collection('room')
+      .doc(peopleUid)
+      .get()
+      .catchError((onError) => print(onError));
+      // inRoom = documentSnapshot.data()!['inRoom'];
+      inRoom = documentSnapshot.get('inRoom');
+    } catch (e) {
+      print(e);
+    }
+    return inRoom;
+  }
+
+  static updateChatIsRead({
+    required bool isSender,
+    required String myUid,
+    required String personUid,
+    required String chatId}) {
+    try {
+      FirebaseFirestore.instance
+          .collection('people')
+          .doc(isSender ? personUid : myUid)
+          .collection('room')
+          .doc(isSender ? myUid : personUid)
+          .collection('chat')
+          .doc(chatId)
+          .update({'isRead':true})
+          .then((value) => null)
+          .catchError((onError) => print(onError));
+    } catch (e) {
+      print(e);
+    }
+  }
 }

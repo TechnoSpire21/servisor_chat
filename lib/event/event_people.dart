@@ -76,17 +76,19 @@ class EventPeople {
     return people;
   }
 
-  static Future<String> getPersonToken(String uid) async{
+  static Future<String> getPeopleToken(String uid) async{
     try {
       String token = '';
     DocumentSnapshot response = await FirebaseFirestore.instance.collection('people')
     .doc(uid)
     .get()
     .catchError((onError)=>print(onError));
-    token = response.data()!['token'];
+
+    // token = response.data().get['token'];
+    token = response.get('token').toString();
     } catch (e) {
-      print(e)
+      print(e);
     }
-    return token;
+    return '';
   }
 }
