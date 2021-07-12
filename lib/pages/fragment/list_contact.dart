@@ -10,12 +10,7 @@ class ListContact extends StatefulWidget {
 class _ListContactState extends State<ListContact> {
   var _emailController = TextEditingController();
 
-  People _myPeople =
-      new People(email: '', name: '', img: '', token: '', uid: '');
-
-  // CollectionReference contactCollection = FirebaseFirestore.instance.collection("")
-
-  //error screen merah
+  People _myPeople = new People(email: '', name: '', img: '', token: '', uid: '');
   Stream<QuerySnapshot>? _streamContact;
 
   Future<void> getMyPeople() async {
@@ -193,10 +188,10 @@ class _ListContactState extends State<ListContact> {
             type: '',
             uid: people.uid,
           );
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => ChatRoom(room: room)),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatRoom(room: room)),
+          );
         },
       ),
     );

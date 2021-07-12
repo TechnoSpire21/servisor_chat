@@ -75,4 +75,18 @@ class EventPeople {
     people = People.fromJson(documentSnapshot.data() as Map<String, dynamic>);
     return people;
   }
+
+  static Future<String> getPersonToken(String uid) async{
+    try {
+      String token = '';
+    DocumentSnapshot response = await FirebaseFirestore.instance.collection('people')
+    .doc(uid)
+    .get()
+    .catchError((onError)=>print(onError));
+    token = response.data()!['token'];
+    } catch (e) {
+      print(e)
+    }
+    return token;
+  }
 }

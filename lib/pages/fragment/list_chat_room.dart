@@ -1,7 +1,7 @@
 part of 'fragment.dart';
 
 class ListChatRoom extends StatefulWidget {
-  const ListChatRoom({Key? key}) : super(key: key);
+  // const ListChatRoom({Key? key}) : super(key: key);
 
   @override
   _ListChatRoomState createState() => _ListChatRoomState();
@@ -48,9 +48,9 @@ class _ListChatRoomState extends State<ListChatRoom> {
           return Center(child: CircularProgressIndicator());
         }
         if (snapshot.data != null && snapshot.data!.docs.length > 0) {
-          List<QueryDocumentSnapshot> listContact = snapshot.data!.docs;
+          List<QueryDocumentSnapshot> listRoom = snapshot.data!.docs;
           return ListView.separated(
-            itemCount: listContact.length,
+            itemCount: listRoom.length,
             separatorBuilder: (context, index) {
               return Divider(
                 thickness: 1,
@@ -58,7 +58,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
               );
             },
             itemBuilder: (context, index) {
-              Room room = Room.fromJson(ListChatRoom[index].data());
+              Room room = Room.fromJson(listRoom[index].data() as Map<String, dynamic>);
               return itemRoom(room);
             },
           );
@@ -72,44 +72,50 @@ class _ListChatRoomState extends State<ListChatRoom> {
   }
 
   Widget itemRoom(Room room) {
-    return Container(
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(40),
-            child: FadeInImage(
-              placeholder: AssetImage('assets/images/servisor.png'),
-              image: NetworkImage(room.img),
-              width: 40,
-              height: 40,
-              fit: BoxFit.cover,
-              imageErrorBuilder: (context, error, stackTrace) {
-                return Image.asset(
-                  'assets/images/servisor.png',
-                  width: 40,
-                  height: 40,
-                  fit: BoxFit.cover,
-                );
-              },
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => ChatRoom(room: room)));
+      },
+      child: Container(
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(40),
+              child: FadeInImage(
+                placeholder: AssetImage('assets/images/servisor.png'),
+                image: NetworkImage(room.img),
+                width: 40,
+                height: 40,
+                fit: BoxFit.cover,
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/images/servisor.png',
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                  );
+                },
+              ),
             ),
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text(room.name), Text(room.lastChat)],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('${room.lastDateTime}'),
-              Text("Badge"),
-            ],
-          )
-        ],
+            SizedBox(
+              width: 16,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Text(room.name), Text(room.lastChat)],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('${room.lastDateTime}'),
+                Text("Badge"),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
