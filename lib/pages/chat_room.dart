@@ -141,19 +141,23 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
     }
 
     bool peopleInRoom = await EventChatRoom.checkIsPersonInRoom(
-        myUid: _myPeople.uid, peopleUid: widget.room.uid);
+      myUid: _myPeople.uid, 
+      peopleUid: widget.room.uid
+    );
+
     if (peopleInRoom) {
-      //method read
       EventChatRoom.updateChatIsRead(
-          isSender: true,
-          myUid: _myPeople.uid,
-          peopleUid: widget.room.uid,
-          chatId: chat.dateTime.toString());
+        chatId: chat.dateTime.toString(),
+        isSender: true,
+        myUid: _myPeople.uid,
+        peopleUid: widget.room.uid,
+      );
       EventChatRoom.updateChatIsRead(
-          isSender: false,
-          myUid: _myPeople.uid,
-          peopleUid: widget.room.uid,
-          chatId: chat.dateTime.toString());
+        chatId: chat.dateTime.toString(),
+        isSender: false,
+        myUid: _myPeople.uid,
+        peopleUid: widget.room.uid,
+      );
     }
   }
 
@@ -335,12 +339,8 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
         //icon read ato gak
         children: [
           SizedBox(
-            child: chat.uidSender == _myPeople.uid
-                ? Icon(
-                    Icons.check,
-                    size: 20,
-                    color: Colors.blue,
-                  )
+            child: chat.uidSender == _myPeople.uid && chat.isRead
+                ? Icon(Icons.check, size: 20, color: Colors.blue)
                 : null,
           ),
           SizedBox(
@@ -362,7 +362,9 @@ class _ChatRoomState extends State<ChatRoom> with WidgetsBindingObserver {
           Container(
             // width: MediaQuery.of(context).size.width * 0.6,
             decoration: BoxDecoration(
-                color: Colors.blue,
+                color: chat.uidSender == _myPeople.uid
+                    ? Colors.blue
+                    : Colors.blue[300],
                 borderRadius: BorderRadius.only(
                   topLeft:
                       Radius.circular(chat.uidSender == _myPeople.uid ? 10 : 0),

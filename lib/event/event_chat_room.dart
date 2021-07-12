@@ -214,8 +214,7 @@ class EventChatRoom {
     required bool isSender,
     required String myUid,
     required String peopleUid,
-    required String chatId,
-  }) {
+    required String chatId}) {
     try {
       FirebaseFirestore.instance
           .collection('people')
@@ -224,7 +223,7 @@ class EventChatRoom {
           .doc(isSender ? myUid : peopleUid)
           .collection('chat')
           .doc(chatId)
-          .update({'isRead': true})
+          .update({'isRead':true})
           .then((value) => null)
           .catchError((onError) => print(onError));
     } catch (e) {
