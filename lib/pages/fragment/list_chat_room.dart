@@ -152,13 +152,78 @@ class _ListChatRoomState extends State<ListChatRoom> {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('$time'),
-                Text("Badge"),
+                Text(
+                  '$time',
+                  style: TextStyle(fontSize: 12),
+                ),
+                SizedBox(height: 4,),
+                countUnreadMessage(room.uid, room.lastDateTime),
               ],
             )
           ],
         ),
       ),
+    );
+  }
+
+  Widget countUnreadMessage(String peopleUid, int lastDateTime){
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+      .collection('people')
+      .doc(_myPeople.uid)
+      .collection('room')
+      .doc(peopleUid)
+      .collection('chat')
+      .snapshots(includeMetadataChanges: true),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return SizedBox();
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SizedBox();
+        }
+
+        if(snapshot.data == null){
+          return SizedBox();
+        }
+        List<QueryDocumentSnapshot> listChat = snapshot.data!.docs;
+        QueryDocumentSnapshot lastChat = listChat.where((element) =>
+        element.get('dateTime') == lastDateTime).toList()[0];
+
+        Chat lastDataChat = Chat.fromJson(lastChat.data() as Map<String, dynamic>);
+        if(lastDataChat.uidSender == _myPeople.uid){
+          return Icon(
+            Icons.check,
+            size: 20,
+            color: lastDataChat.isRead? Colors.blue:Colors.grey,
+          );
+        }else{
+          int unRead = 0;
+          for (var doc in listChat) {
+            Chat docChat = Chat.fromJson(doc.data() as Map<String, dynamic>);
+            if(!docChat.isRead && docChat.uidSender == peopleUid){
+              print("ini doc" + doc.toString());
+              unRead = unRead + 1;
+            }
+          }
+          if(unRead == 0){
+            return SizedBox();
+          }else{
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10)
+              ),
+              padding: EdgeInsets.all(4),
+              child: Text(
+                unRead.toString(),
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            );
+          }
+        }
+      },
     );
   }
 }
