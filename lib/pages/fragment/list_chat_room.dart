@@ -58,7 +58,8 @@ class _ListChatRoomState extends State<ListChatRoom> {
               );
             },
             itemBuilder: (context, index) {
-              Room room = Room.fromJson(listRoom[index].data() as Map<String, dynamic>);
+              Room room =
+                  Room.fromJson(listRoom[index].data() as Map<String, dynamic>);
               return itemRoom(room);
             },
           );
@@ -72,12 +73,28 @@ class _ListChatRoomState extends State<ListChatRoom> {
   }
 
   Widget itemRoom(Room room) {
+    String today = DateFormat('yyyy/MM/dd').format(DateTime.now());
+    String yesterday = DateFormat('yyyy/MM/dd')
+        .format(DateTime.now().subtract(Duration(days: 1)));
+    DateTime roomDateTime =
+        DateTime.fromMicrosecondsSinceEpoch(room.lastDateTime);
+    String stringLastDateTime = DateFormat('yyyy/MM/dd').format(roomDateTime);
+    String time = '';
+    if (stringLastDateTime == today) {
+      time = DateFormat('HH:mm').format(roomDateTime);
+    } else if (stringLastDateTime == yesterday) {
+      time = 'Yesterday';
+    } else {
+      time = DateFormat('yyyy/MM/dd').format(roomDateTime);
+    }
+
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => ChatRoom(room: room)));
+            MaterialPageRoute(builder: (context) => ChatRoom(room: room)));
       },
       child: Container(
+        padding: EdgeInsets.all(16),
         child: Row(
           children: [
             ClipRRect(
@@ -101,16 +118,41 @@ class _ListChatRoomState extends State<ListChatRoom> {
             SizedBox(
               width: 16,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text(room.name), Text(room.lastChat)],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(room.name),
+                  Row(
+                    children: [
+                      SizedBox(
+                        child: room.type == 'image'
+                            ? Icon(
+                                Icons.image,
+                                size: 15,
+                                color: Colors.grey[700],
+                              )
+                            : null,
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        room.type == 'text'
+                            ? room.lastChat.length > 20
+                                ? room.lastChat.substring(0, 20) + '...'
+                                : room.lastChat
+                            : ' <Image>',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('${room.lastDateTime}'),
+                Text('$time'),
                 Text("Badge"),
               ],
             )
