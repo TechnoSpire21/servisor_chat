@@ -21,31 +21,31 @@ class EventStorage {
     }
   }
 
-  // static void deleteOldFile(String oldUrl) async {
-  //   try {
-  //     String urlFile = FirebaseStorage.instance.refFromURL(oldUrl).fullPath;
-  //     await FirebaseStorage.instance.ref(urlFile).delete();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  static void deleteOldFile(String oldUrl) async {
+    try {
+      String urlFile = FirebaseStorage.instance.refFromURL(oldUrl).fullPath;
+      await FirebaseStorage.instance.ref(urlFile).delete();
+    } catch (e) {
+      print(e);
+    }
+  }
 
-  // static Future<String> uploadMessageImageAndGetUrl({
-  //   File filePhoto,
-  //   String myUid,
-  //   String peopleUid,
-  // }) async {
-  //   String imageUrl = '';
-  //   try {
-  //     String fileName = basename(filePhoto.path);
-  //     TaskSnapshot taskSnapshot = await FirebaseStorage.instance
-  //         .ref()
-  //         .child('$myUid/$peopleUid/$fileName')
-  //         .putFile(filePhoto);
-  //     imageUrl = await taskSnapshot.ref.getDownloadURL();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   return imageUrl;
-  // }
+  static Future<String> uploadMessageImageAndGetUrl({
+    required File filePhoto,
+    required String myUid,
+    required String peopleUid,
+  }) async {
+    String imageUrl = '';
+    try {
+      String fileName = basename(filePhoto.path);
+      TaskSnapshot taskSnapshot = await FirebaseStorage.instance
+          .ref()
+          .child('$myUid/$peopleUid/$fileName')
+          .putFile(filePhoto);
+      imageUrl = await taskSnapshot.ref.getDownloadURL();
+    } catch (e) {
+      print(e);
+    }
+    return imageUrl;
+  }
 }

@@ -230,4 +230,77 @@ class EventChatRoom {
       print(e);
     }
   }
+
+  static void setMeInRoom(String myUid, String peopleUid){
+    try {
+      FirebaseFirestore.instance
+          .collection('people')
+          .doc(peopleUid)
+          .collection('room')
+          .doc(myUid)
+          .update({'inRoom':true})
+          .then((value) {
+            _setAllMessageRead(
+              isSender: true,
+              myUid: myUid,
+              peopleUid: peopleUid,
+            );
+            _setAllMessageRead(
+              isSender: false,
+              myUid: myUid,
+              peopleUid: peopleUid,
+            );
+          })
+          .catchError((onError) => print(onError));
+      
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static void setMeOutRoom(String myUid, String peopleUid){
+    try {
+      FirebaseFirestore.instance
+          .collection('people')
+          .doc(peopleUid)
+          .collection('room')
+          .doc(myUid)
+          .update({'inRoom':false})
+          .then((value) {
+            
+          })
+          .catchError((onError) => print(onError));
+      
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static void _setAllMessageRead({
+    required bool isSender,
+    required String myUid,
+    required String peopleUid,}) {
+    try {
+      FirebaseFirestore.instance
+          .collection('people')
+          .doc(isSender ? peopleUid : myUid)
+          .collection('room')
+          .doc(isSender ? myUid : peopleUid)
+          .collection('chat')
+          .where('isRead', isEqualTo: false)
+          .get()
+          .then((querySnapshot) {
+        for (var docChat in querySnapshot.docs) {
+          if (docChat.data()['uidSender'] == peopleUid) {
+            docChat.reference
+                .update({'isRead': true})
+                .then((value) => null)
+                .catchError((onError) => print(onError));
+          }
+        }
+      }).catchError((onError) => print(onError));
+    } catch (e) {
+      print(e);
+    }
+  }
 }
