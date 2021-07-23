@@ -158,6 +158,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
                 ),
                 SizedBox(height: 4,),
                 countUnreadMessage(room.uid, room.lastDateTime),
+                
               ],
             )
           ],
@@ -203,7 +204,7 @@ class _ListChatRoomState extends State<ListChatRoom> {
           for (var doc in listChat) {
             Chat docChat = Chat.fromJson(doc.data() as Map<String, dynamic>);
             if(!docChat.isRead && docChat.uidSender == peopleUid){
-              print("ini doc" + doc.toString());
+              print("ini doc" + doc.data().toString());
               unRead = unRead + 1;
             }
           }

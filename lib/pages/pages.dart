@@ -24,3 +24,4 @@ part 'login.dart';
 part 'register.dart';
 part 'forgot_password.dart';
 part 'chat_room.dart';
+part 'edit_profile.dart';

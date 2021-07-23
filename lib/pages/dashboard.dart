@@ -180,7 +180,14 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditProfile(people: _myPeople),
+                ),
+              ).then((value) => getMyPeople());
+            },
             leading: Icon(Icons.person),
             title: Text('Edit Profile'),
             trailing: Icon(Icons.navigate_next),
